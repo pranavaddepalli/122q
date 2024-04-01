@@ -26,10 +26,10 @@ const lightTheme = createTheme({
     mode: 'light',
     primary: {
       // main: '#EF8EC3',
-      main: '#015122',
+      main: '#014122',
     },
     secondary: {
-      main: '#EA3947',
+      main: '#f4cd2a',
     },
     success: {
       main: '#43a047',
@@ -49,7 +49,7 @@ const lightTheme = createTheme({
     cancel: '#9e9e9e',
     unfreeze: '#ba68c8',
     // navbar: '#EF8EC3',
-    navbar: '#015122',
+    navbar: '#014122',
   },
   components: {
     MuiButton: {
@@ -121,10 +121,10 @@ const darkTheme = createTheme({
     mode: 'dark',
     primary: {
       // main: '#EF8EC3',
-      main: '#015122',
+      main: '#014122',
     },
     secondary: {
-      main: '#e8152e',
+      main: '#f4cd2a',
     },
     success: {
       main: '#09e312',
@@ -142,12 +142,12 @@ const darkTheme = createTheme({
   },
   alternateColors: {
     // darkerPrimary: '#e36bac',
-    darkerPrimary: '#013122',
+    darkerPrimary: '#014122',
     alternatePaper: '#575757',
     cancel: '#9e9e9e',
     unfreeze: '#ba68c8',
     // navbar: '#e36bac',
-    navbar: '#013122',
+    navbar: '#014122',
   },
   components: {
     MuiButton: {

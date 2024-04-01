@@ -63,7 +63,7 @@ exports.queueData = function (queueData) {
         console.log("ERROR: Socket.io is not initialized yet");
         return;
     }
-
+ 
     sio.emit("queueData", {
         ...queueData
     });

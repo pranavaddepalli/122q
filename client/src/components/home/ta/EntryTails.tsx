@@ -10,9 +10,12 @@ import StudentStatus from './TailOptions/StudentStatus';
 import LeapStudentActions from './TailOptions/LeapStudentActions';
 
 import {StudentStatusValues} from '../../../services/StudentStatus';
+import PersistentOptions from './TailOptions/PersistentOptions';
 
 export default function EntryTails(props) {
   const {student, index, isHelping, helpIdx} = props;
+
+  const showApproval = props.showCooldownApproval;
 
   const status = student.status;
 
@@ -30,8 +33,13 @@ export default function EntryTails(props) {
       case StudentStatusValues.WAITING: return (ActionsHelp(props));
       case StudentStatusValues.FIXING_QUESTION: return (ActionsHelp(props));
       case StudentStatusValues.FROZEN: return (ActionsFreeze(props));
-      case StudentStatusValues.COOLDOWN_VIOLATION: return (LeapStudentActions(props));
       case StudentStatusValues.RECEIVED_MESSAGE: return (ActionsHelp(props));
+      case StudentStatusValues.COOLDOWN_VIOLATION:
+        if (showApproval) {
+          return (LeapStudentActions(props));
+        } else {
+          return (ActionsHelp({...props, color: 'secondary'}));
+        }
       default: return;
     }
   };

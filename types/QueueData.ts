@@ -6,6 +6,7 @@ export type QueueData = {
   title: string,
   uninitializedSem: boolean,
   queueFrozen: boolean,
+  allowCDOverride: boolean,
 
   // global stats
   numStudents: number

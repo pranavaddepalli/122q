@@ -63,6 +63,9 @@ class SettingsDataService {
   updateEnforceCmuEmail(data) {
     return http.post('/settings/config/enforcecmuemail/update', data);
   }
+  updateAllowCDOverride(data) {
+    return http.post('/settings/config/allowcdoverride/update', data);
+  }
   updatePreferredName(data) {
     return http.post('/settings/preferredname/update', data);
   }

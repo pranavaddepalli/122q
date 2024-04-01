@@ -18,6 +18,7 @@ const defaultAdminSettings = {
     questionsURL: '',
     rejoinTime: 15,
     enforceCMUEmail: true,
+    allowCDOverride: true,
     dayDictionary: {}
 };
 
@@ -52,7 +53,6 @@ else if (fs.existsSync("../adminSettings.json") && !haveSameKeys(adminSettings, 
 }
 
 exports.get_admin_settings = function () {
-
     let data = fs.readFileSync('../adminSettings.json', 'utf8', flag = 'r+');
     if (data) {
         adminSettings = JSON.parse(data);
@@ -313,6 +313,27 @@ exports.post_update_enforce_cmu_email = function (req, res) {
     adminSettings.enforceCMUEmail = enforceCMUEmail;
     writeAdminSettings(adminSettings);
     respond_success(req, res, `Enforcing CMU email updated successfully to: ${enforceCMUEmail}`);
+}
+
+exports.post_update_allow_cooldown_override = function (req, res) {
+    if (!req.user || !req.user.isAdmin) {
+        respond_error(req, res, "You don't have permission to perform this operation", 403);
+        return;
+    }
+
+    var allowCDOverride = req.body.allowCDOverride;
+
+    if (allowCDOverride == null || allowCDOverride == undefined) {
+        respond_error(req, res, "Invalid/missing parameters in request", 400);
+        return;
+    }
+
+    if (adminSettings.allowCDOverride == allowCDOverride) return;
+
+    adminSettings.allowCDOverride = allowCDOverride;
+    writeAdminSettings(adminSettings);
+    home.emit_new_queue_data();
+    respond_success(req, res, `Allow Cooldown Override updated successfuly to: ${allowCDOverride}`)
 }
 
 /** Topics Functions **/

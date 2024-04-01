@@ -24,6 +24,7 @@ const QueueDataContextProvider = ({children}: {children: React.ReactNode}) => {
     title: '15-122 Office Hours Queue',
     uninitializedSem: false,
     queueFrozen: true,
+    allowCDOverride: true,
 
     numStudents: 0,
     rejoinTime: 15,

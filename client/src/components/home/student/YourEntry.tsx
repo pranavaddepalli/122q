@@ -23,6 +23,8 @@ export default function YourEntry(props) {
   const {queueData} = useContext(QueueDataContext);
   const {studentData} = useContext(StudentDataContext);
 
+  const cooldownMsg = queueData.allowCDOverride ? 'You have been frozen in line. This means you will not advance in the queue until a TA approves your entry.' : 'You have been frozen in line. You will not advance in the queue! Please wait for your cooldown to end before joining the queue again.';
+
   return (
     <BaseCard>
       <CardContent sx={{m: 1, textAlign: 'left'}}>
@@ -41,8 +43,7 @@ export default function YourEntry(props) {
               <Stack direction='row' display='flex' alignItems='center'>
                 <PauseIcon color='error' sx={{pr: 1}} />
                 <Typography color='error' sx={{fontWeight: 'bold'}}>
-                        You have been frozen in line. This means you will not advance in the queue
-                        until a TA approves your entry.
+                  {cooldownMsg}
                 </Typography>
               </Stack>
             </div>

@@ -26,6 +26,7 @@ router.post('/config/slack/update', settings.post_update_slack_url);
 router.post('/config/questions/update', settings.post_update_questions_url);
 router.post('/config/rejoin/update', settings.post_update_rejoin_time);
 router.post('/config/enforcecmuemail/update', settings.post_update_enforce_cmu_email);
+router.post('/config/allowcdoverride/update', settings.post_update_allow_cooldown_override);
 
 router.post('/locations/update', settings.post_update_locations);
 router.post('/locations/add', settings.add_location);

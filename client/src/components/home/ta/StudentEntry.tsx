@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useContext} from 'react';
 import {
   Stack, TableCell, Typography,
 } from '@mui/material';
@@ -7,16 +7,21 @@ import PauseIcon from '@mui/icons-material/Pause';
 import EntryTails from './EntryTails';
 import ItemRow from '../../common/table/ItemRow';
 
+import {QueueDataContext} from '../../../contexts/QueueDataContext';
+
 import HomeService from '../../../services/HomeService';
 import {StudentStatusValues} from '../../../services/StudentStatus';
+import {Settings} from '@mui/icons-material';
+import {debug} from 'util';
 
 export default function StudentEntry(props) {
+  const {queueData} = useContext(QueueDataContext);
   const {student, index, handleClickHelp, removeStudent, handleClickUnfreeze} = props;
 
   const [confirmRemove, setConfirmRemove] = useState(false);
   const removeRef = useRef();
 
-  const [showCooldownApproval, setShowCooldownApproval] = useState(student['status'] === StudentStatusValues.COOLDOWN_VIOLATION);
+  const [showCooldownApproval, setShowCooldownApproval] = useState(queueData.allowCDOverride && student['status'] === StudentStatusValues.COOLDOWN_VIOLATION);
 
   useEffect(() => {
     const closeExpanded = (e) => {
@@ -31,6 +36,11 @@ export default function StudentEntry(props) {
       document.body.removeEventListener('click', closeExpanded);
     };
   }, []);
+
+  // Update showCooldownApproval when allowCDOverride changes
+  useEffect(() => {
+    setShowCooldownApproval(queueData.allowCDOverride && student['status'] === StudentStatusValues.COOLDOWN_VIOLATION);
+  }, [queueData.allowCDOverride, student['status']]);
 
   function handleRemoveButton() {
     if (confirmRemove) {

@@ -77,6 +77,7 @@ function buildQueueData() {
         title: "15-122 Office Hours Queue",
         uninitializedSem: adminSettings.currSem == null,
         queueFrozen: queueFrozen,
+        allowCDOverride: adminSettings.allowCDOverride,
 
         // global stats
         numStudents: ohq.size(),
@@ -515,8 +516,12 @@ exports.post_add_question = function (req, res) {
             if (!student) {
                 throw new Error('No existing student account with provided andrew ID.');
             }
-
+            
+            let allowCDOverride = settings.get_admin_settings().allowCDOverride;
             // check for cooldown violation
+            if (overrideCooldown && !allowCDOverride) {
+                throw new Error('Cooldown override is disabled');
+            }
             let rejoinTime = settings.get_admin_settings().rejoinTime
             return Promise.props({
                 questions: models.question.findAll({
@@ -886,6 +891,12 @@ exports.post_approve_cooldown_override = function (req, res) {
     }
     else if (!req.user.isTA) {
         respond_error(req, res, "This request was not made by a TA", 400);
+        return
+    }
+    
+    let cooldownAllowed = settings.get_admin_settings().allowCDOverride
+    if (!cooldownAllowed) {
+        respond_error(req, res, "Cooldown Override has been disabled", 400)
         return
     }
 

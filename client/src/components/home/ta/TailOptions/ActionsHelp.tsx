@@ -12,12 +12,14 @@ export default function ActionsHelp(props) {
     student, index, isHelping, handleClickHelp,
   } = props;
 
+  const buttonColor = props.color == null ? 'info' : props.color;
+
   return (
     <Stack
       direction={{xs: 'column', sm: 'row'}}
       sx={{alignItems: 'center', justifyContent: 'flex-end'}}
     >
-      <Button disabled={student.status === StudentStatusValues.BEING_HELPED || isHelping} color="info" variant="contained" onClick={() => handleClickHelp(index)} sx={{m: 0.5}}>
+      <Button disabled={student.status === StudentStatusValues.BEING_HELPED || isHelping} color={buttonColor} variant="contained" onClick={() => handleClickHelp(index)} sx={{m: 0.5}}>
         Help
       </Button>
       {PersistentOptions(props)}
