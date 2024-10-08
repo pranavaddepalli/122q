@@ -3,14 +3,13 @@ import {
   Link,
 } from '@mui/material';
 import {useContext} from 'react';
-import {AdminSettingsContext} from '../../contexts/AdminSettingsContext';
+import {QueueDataContext} from '../../contexts/QueueDataContext';
 
 export default function OHQueueHeader() {
-  const {adminSettings} = useContext(AdminSettingsContext);
-  const courseName = adminSettings.courseName;
+  const {queueData} = useContext(QueueDataContext);
   return (
     <Link variant="h6" color="#FFFFFF" fontWeight='bold' href="" underline="none" sx={{pt: 0.3}}>
-      {courseName} Office Hours Queue
+      {queueData.title}
     </Link>
   );
 }
