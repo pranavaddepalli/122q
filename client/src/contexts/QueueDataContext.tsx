@@ -21,7 +21,7 @@ const QueueDataContext = createContext({
  */
 const QueueDataContextProvider = ({children}: {children: React.ReactNode}) => {
   const [queueData, setQueueData] = useState<QueueData>({
-    title: '15-122 Office Hours Queue',
+    title: 'Office Hours Queue',
     uninitializedSem: false,
     queueFrozen: true,
     allowCDOverride: true,

@@ -21,6 +21,7 @@ router.post('/tas/delete', settings.post_delete_ta);
 router.post('/tas/downloadCSV', settings.post_download_ta_csv);
 router.post('/tas/uploadCSV', settings.post_upload_ta_csv);
 
+router.post('/config/coursename/update', settings.post_update_course_name);
 router.post('/config/sem/update', settings.post_update_semester);
 router.post('/config/slack/update', settings.post_update_slack_url);
 router.post('/config/questions/update', settings.post_update_questions_url);

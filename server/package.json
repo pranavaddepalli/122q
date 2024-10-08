@@ -1,7 +1,7 @@
 {
   "name": "122q",
   "version": "1.0.0",
-  "description": "Office Hours Queue for Carnegie Mellon University's 15-122",
+  "description": "Office Hours Queue for Carnegie Mellon University courses",
   "main": "app.js",
   "scripts": {
     "start": "nodemon app.js",

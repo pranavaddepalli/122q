@@ -48,6 +48,9 @@ class SettingsDataService {
       },
     });
   }
+  updateCourseName(data) {
+    return http.post('/settings/config/coursename/update', data);
+  }
   updateSemester(data) {
     return http.post('/settings/config/sem/update', data);
   }

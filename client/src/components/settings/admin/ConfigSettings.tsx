@@ -19,16 +19,30 @@ export default function ConfigSettings(props) {
   const [questionsURL, setQuestionsURL] = useState('');
   const [enforceCMUEmail, setEnforceCMUEmail] = useState(true);
   const [allowCDOverride, setAllowCDOverride] = useState(true);
+  const [courseName, setCourseName] = useState('');
 
   useEffect(() => {
     setCurrSem(adminSettings.currSem);
     setSlackURL(adminSettings.slackURL);
     setEnforceCMUEmail(adminSettings.enforceCMUEmail);
+    setCourseName(adminSettings.courseName);
   }, [adminSettings]);
   useEffect(() => {
     setAllowCDOverride(queueData.allowCDOverride);
     setQuestionsURL(queueData.questionsURL);
   }, [queueData]);
+
+
+  const handleUpdateCourseName = (event) => {
+    event.preventDefault();
+    if (courseName === adminSettings.courseName) return;
+
+    SettingsService.updateCourseName(
+        JSON.stringify({
+          courseName: courseName,
+        }),
+    );
+  };
 
   const handleUpdateSemester = (event) => {
     event.preventDefault();
@@ -86,12 +100,34 @@ export default function ConfigSettings(props) {
     );
   };
 
+
   return (
     <BaseCard>
       <CardContent>
         <Typography sx={{fontWeight: 'bold', ml: 1, mt: 1}} variant="body1" gutterBottom>
           Config Settings
         </Typography>
+        <form onSubmit={handleUpdateCourseName}>
+          <Grid container spacing={2} sx={{mb: 2}}>
+            <Grid className="d-flex" item sx={{mx: 1, ml: 1}}>
+              Course Name:
+              <TextField
+                id="course-name"
+                placeholder="Course Name"
+                variant="standard"
+                sx={{ml: 1, mt: -1}}
+                style={{width: '160px'}}
+                value={courseName ?? ''}
+                onChange={(e) => {
+                  setCourseName(e.target.value);
+                }}
+              />
+            </Grid>
+            <Grid className="d-flex" item sx={{mr: 2}} xs={1.5}>
+              <Button type="submit" variant="contained">Save</Button>
+            </Grid>
+          </Grid>
+        </form>
         <form onSubmit={handleUpdateSemester}>
           <Grid container spacing={2} sx={{mb: 2}}>
             <Grid className="d-flex" item sx={{mt: 1, ml: 1}}>
