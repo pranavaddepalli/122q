@@ -18,7 +18,7 @@
     ```
 3. You may need to download and install [PostgreSQL](https://www.postgresql.org/download/) and set up the database ([see below](#setting-up-the-database))
 4. Set up environment files ([see below](#configuration))
-5. Log in with the owner email, which is defined in `server/.env`, change "Current Semester" to a new value and click "Save."  This creates the initial database entry for a semester.
+5. **Log in with the owner email, which is defined in `server/.env`, change "Current Semester" to a new value and click "Save."  This creates the initial database entry for a semester.**
 6. Go to settings and create a new TA with an email that's **different from the owner email**.  The owner email is special and can't interact normally on the queue, so you'll need a separate TA email to test the TA view.
 
 ## Running Server
