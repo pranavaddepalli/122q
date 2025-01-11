@@ -48,10 +48,11 @@ server {
 
   include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
 
+  # This is old and seemingly not needed, could cause ERR_TOO_MANY_REDIRECTS
   # Redirect non-https traffic to https
-  if ($scheme != "https") {
-     return 301 https://$host$request_uri;
-  } # managed by Certbot
+  # if ($scheme != "https") {
+     # return 301 https://$host$request_uri;
+  # } # managed by Certbot
 
   location /ohq/ {
       rewrite /ohq/(.*) /$1 break;
