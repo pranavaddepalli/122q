@@ -7,6 +7,7 @@ const models = require('../models');
 const sockets = require('./sockets');
 const slack = require('./slack');
 const home = require('./home');
+const path = require('path');
 
 // Global admin settings
 // FIXME: some default values are set to simplify testing;
@@ -14,7 +15,7 @@ const home = require('./home');
 var fs = require('fs');
 const defaultAdminSettings = {
   courseName: '',
-  currSem: 'S23',
+  currSem: '',
   slackURL: null,
   questionsURL: '',
   rejoinTime: 15,
@@ -23,7 +24,17 @@ const defaultAdminSettings = {
   dayDictionary: {},
 };
 
+const adminSettingsPath = path.join(
+  __dirname,
+  '..',
+  '..',
+  'adminSettings.json'
+);
+
 let adminSettings = defaultAdminSettings;
+
+// whenever starting server, check if adminSettings.json is up to date
+updateAdminSettingsJSON();
 
 function haveSameKeys(obj1, obj2) {
   const obj1Keys = Object.keys(obj1).sort();
@@ -32,39 +43,50 @@ function haveSameKeys(obj1, obj2) {
 }
 
 // If no admin setting have been generated, use the above default values
-if (!fs.existsSync('../adminSettings.json')) {
-  var json = JSON.stringify(adminSettings);
-  fs.writeFile('../adminSettings.json', json, 'utf8', function () {
-    console.log('Created admin settings JSON');
-  });
-}
-// If admin settings have been generated, but the keys don't match, update the missing keys
-else if (
-  fs.existsSync('../adminSettings.json') &&
-  !haveSameKeys(
-    adminSettings,
-    JSON.parse(fs.readFileSync('../adminSettings.json', 'utf8'))
-  )
-) {
-  let currAdminSettings = fs.readFileSync(
-    '../adminSettings.json',
-    'utf8',
-    (flag = 'r+')
-  );
-  let newAdminSettings = JSON.parse(currAdminSettings);
-  for (let key in adminSettings) {
-    if (!newAdminSettings.hasOwnProperty(key)) {
-      newAdminSettings[key] = adminSettings[key];
-    }
+function _createAdminSettingsJSON() {
+  if (!fs.existsSync(adminSettingsPath)) {
+    var json = JSON.stringify(adminSettings);
+    fs.writeFileSync(adminSettingsPath, json, 'utf8');
   }
-  var json = JSON.stringify(newAdminSettings);
-  fs.writeFileSync('../adminSettings.json', json, 'utf8', function () {
-    console.log('Updated admin settings JSON');
-  });
+}
+
+// If admin settings have been generated, but the keys don't match, update the missing keys
+function updateAdminSettingsJSON() {
+  if (!fs.existsSync(adminSettingsPath)) {
+    _createAdminSettingsJSON();
+  }
+
+  if (
+    !haveSameKeys(
+      adminSettings,
+      JSON.parse(fs.readFileSync(adminSettingsPath, 'utf8'))
+    )
+  ) {
+    let currAdminSettings = fs.readFileSync(
+      adminSettingsPath,
+      'utf8',
+      (flag = 'r+')
+    );
+    let newAdminSettings = JSON.parse(currAdminSettings);
+    for (let key in adminSettings) {
+      if (!newAdminSettings.hasOwnProperty(key)) {
+        newAdminSettings[key] = adminSettings[key];
+      }
+    }
+    var json = JSON.stringify(newAdminSettings);
+    fs.writeFileSync(adminSettingsPath, json, 'utf8', function () {
+      console.log('Updated admin settings JSON');
+    });
+  }
 }
 
 exports.get_admin_settings = function () {
-  let data = fs.readFileSync('../adminSettings.json', 'utf8', (flag = 'r+'));
+  // if file doesn't exist, create it
+  if (!fs.existsSync(adminSettingsPath)) {
+    updateAdminSettingsJSON();
+  }
+
+  let data = fs.readFileSync(adminSettingsPath, 'utf8', (flag = 'r+'));
   if (data) {
     adminSettings = JSON.parse(data);
   } else {

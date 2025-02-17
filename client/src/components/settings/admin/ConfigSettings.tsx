@@ -4,9 +4,9 @@ import {
   CardContent,
   Typography,
   TextField,
-  Grid,
   Checkbox,
   Stack,
+  Tooltip,
 } from '@mui/material';
 
 import BaseCard from '../../common/cards/BaseCard';
@@ -21,7 +21,7 @@ export default function ConfigSettings(props) {
   const { queueData } = useContext(QueueDataContext);
   const { userData } = useContext(UserDataContext);
 
-  const [currSem, setCurrSem] = useState('');
+  const [currSem, setCurrSem] = useState<string>(undefined);
   const [slackURL, setSlackURL] = useState('');
   const [questionsURL, setQuestionsURL] = useState('');
   const [enforceCMUEmail, setEnforceCMUEmail] = useState(true);
@@ -145,17 +145,36 @@ export default function ConfigSettings(props) {
                 inputProps={{ maxLength: 3 }}
                 sx={{ width: 80 }}
               />
-              <Button
-                type="submit"
-                variant="contained"
-                disabled={!userData.isOwner}
-              >
-                Save
-              </Button>
+              {!userData.isOwner ?
+                (
+                  <Typography variant="caption" color="text.secondary">
+                    Only {queueData.ownerEmail} can change semester
+                  </Typography>
+                ) :
+                (
+                  <Tooltip
+                    title={
+                      <Typography>
+                        Update Current Semester First, this initializes your semester!
+                      </Typography>
+                    }
+                    placement="right"
+                    arrow
+                    open={currSem != undefined && adminSettings.currSem === ''}
+                    enterDelay={1000}
+                  >
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      disabled={!userData.isOwner}
+                    >
+                      Save
+                    </Button>
+                  </Tooltip>
+                )
+              }
               <Typography variant="caption" color="text.secondary">
-                {!userData.isOwner ?
-                  `Only ${queueData.ownerEmail} can change semester` :
-                  'Format: F23, S24, etc'}
+                Each semester has its own settings and stats
               </Typography>
             </Stack>
           </form>
