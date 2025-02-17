@@ -3,11 +3,12 @@
         "target": "es5",
         "esModuleInterop": true,
         "downlevelIteration": true,
-        "suppressImplicitAnyIndexErrors": true,
         "strictNullChecks": false,
         "jsx": "react-jsx",
         "lib": [
-            "es5", "es2015.core", "dom"
+            "es5",
+            "es2015.core",
+            "dom"
         ],
         "module": "commonjs",
         "moduleResolution": "node",
