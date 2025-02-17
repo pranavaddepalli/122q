@@ -14,7 +14,7 @@ const home = require('./home');
 var fs = require('fs');
 const defaultAdminSettings = {
   courseName: '',
-  currSem: 'S23',
+  currSem: '',
   slackURL: null,
   questionsURL: '',
   rejoinTime: 15,

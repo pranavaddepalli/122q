@@ -1,7 +1,12 @@
-
 import React, {useState, useEffect, useContext} from 'react';
 import {
-  Button, CardContent, Typography, TextField, Grid, Checkbox,
+  Button,
+  CardContent,
+  Typography,
+  TextField,
+  Grid,
+  Checkbox,
+  Tooltip,
 } from '@mui/material';
 
 import BaseCard from '../../common/cards/BaseCard';
@@ -14,7 +19,7 @@ export default function ConfigSettings(props) {
   const {adminSettings} = useContext(AdminSettingsContext);
   const {queueData} = useContext(QueueDataContext);
 
-  const [currSem, setCurrSem] = useState('');
+  const [currSem, setCurrSem] = useState<string>(undefined);
   const [slackURL, setSlackURL] = useState('');
   const [questionsURL, setQuestionsURL] = useState('');
   const [enforceCMUEmail, setEnforceCMUEmail] = useState(true);
@@ -31,7 +36,6 @@ export default function ConfigSettings(props) {
     setAllowCDOverride(queueData.allowCDOverride);
     setQuestionsURL(queueData.questionsURL);
   }, [queueData]);
-
 
   const handleUpdateCourseName = (event) => {
     event.preventDefault();
@@ -100,34 +104,16 @@ export default function ConfigSettings(props) {
     );
   };
 
-
   return (
     <BaseCard>
       <CardContent>
-        <Typography sx={{fontWeight: 'bold', ml: 1, mt: 1}} variant="body1" gutterBottom>
+        <Typography
+          sx={{fontWeight: 'bold', ml: 1, mt: 1}}
+          variant="body1"
+          gutterBottom
+        >
           Config Settings
         </Typography>
-        <form onSubmit={handleUpdateCourseName}>
-          <Grid container spacing={2} sx={{mb: 2}}>
-            <Grid className="d-flex" item sx={{mx: 1, ml: 1}}>
-              Course Name:
-              <TextField
-                id="course-name"
-                placeholder="Course Name"
-                variant="standard"
-                sx={{ml: 1, mt: -1}}
-                style={{width: '160px'}}
-                value={courseName ?? ''}
-                onChange={(e) => {
-                  setCourseName(e.target.value);
-                }}
-              />
-            </Grid>
-            <Grid className="d-flex" item sx={{mr: 2}} xs={1.5}>
-              <Button type="submit" variant="contained">Save</Button>
-            </Grid>
-          </Grid>
-        </form>
         <form onSubmit={handleUpdateSemester}>
           <Grid container spacing={2} sx={{mb: 2}}>
             <Grid className="d-flex" item sx={{mt: 1, ml: 1}}>
@@ -144,8 +130,45 @@ export default function ConfigSettings(props) {
                 }}
               />
             </Grid>
+            <Tooltip
+              title={
+                <Typography>
+                  Update Current Semester First, this initializes your semester!
+                </Typography>
+              }
+              placement="right"
+              arrow
+              open={currSem != undefined && adminSettings.currSem === ''}
+              enterDelay={1000}
+            >
+              <Grid className="d-flex" item sx={{mr: 2}}>
+                <Button type="submit" variant="contained">
+                  Save
+                </Button>
+              </Grid>
+            </Tooltip>
+          </Grid>
+        </form>
+        <form onSubmit={handleUpdateCourseName}>
+          <Grid container spacing={2} sx={{mb: 2}}>
+            <Grid className="d-flex" item sx={{mt: 1, ml: 1}}>
+              Course Name:
+              <TextField
+                id="course-name"
+                placeholder="Course Name"
+                variant="standard"
+                sx={{ml: 1, mt: -1}}
+                style={{width: '160px'}}
+                value={courseName ?? ''}
+                onChange={(e) => {
+                  setCourseName(e.target.value);
+                }}
+              />
+            </Grid>
             <Grid className="d-flex" item sx={{mr: 2}}>
-              <Button type="submit" variant="contained">Save</Button>
+              <Button type="submit" variant="contained">
+                Save
+              </Button>
             </Grid>
           </Grid>
         </form>
@@ -163,7 +186,9 @@ export default function ConfigSettings(props) {
               />
             </Grid>
             <Grid className="d-flex" item sx={{mt: 1, mr: 2}}>
-              <Button type="submit" variant="contained">Save</Button>
+              <Button type="submit" variant="contained">
+                Save
+              </Button>
             </Grid>
           </Grid>
         </form>
@@ -181,7 +206,9 @@ export default function ConfigSettings(props) {
               />
             </Grid>
             <Grid className="d-flex" item sx={{mt: 1, mr: 2}}>
-              <Button type="submit" variant="contained">Save</Button>
+              <Button type="submit" variant="contained">
+                Save
+              </Button>
             </Grid>
           </Grid>
         </form>
@@ -200,7 +227,9 @@ export default function ConfigSettings(props) {
               />
             </Grid>
             <Grid className="d-flex" item sx={{mr: 2}} xs={1.5}>
-              <Button type="submit" variant="contained">Save</Button>
+              <Button type="submit" variant="contained">
+                Save
+              </Button>
             </Grid>
           </Grid>
         </form>
@@ -219,7 +248,9 @@ export default function ConfigSettings(props) {
               />
             </Grid>
             <Grid className="d-flex" item sx={{mr: 2}} xs={1.5}>
-              <Button type="submit" variant="contained">Save</Button>
+              <Button type="submit" variant="contained">
+                Save
+              </Button>
             </Grid>
           </Grid>
         </form>
