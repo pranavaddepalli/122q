@@ -30,17 +30,17 @@
     "express": "^4.18.1",
     "google-auth-library": "^8.5.2",
     "jest": "^28.1.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.2",
     "moment": "^2.29.3",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
-    "mysql2": "^2.3.3",
+    "mysql2": "^3.12.0",
     "nodemon": "^2.0.16",
-    "package.json": "^2.0.1",
+    "package.json": "^0.0.0",
     "pg": "^8.7.3",
     "sequelize": "^6.20.1",
     "slack-webhook": "^1.0.0",
-    "socket.io": "^4.5.1"
+    "socket.io": "^4.8.1"
   },
   "devDependencies": {
     "@babel/core": "^7.18.2",

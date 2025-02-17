@@ -17,6 +17,10 @@ exports.init = function (server) {
         cors: {
             origin: config.PROTOCOL + "://" + config.DOMAIN + ":" + config.CLIENT_PORT,
             methods: ["GET", "POST"]
+        },
+        connectionStateRecovery: {
+            maxDisconnectionDuration: 2 * 60 * 1000,
+            skipMiddlewares: true
         }
     });
 
@@ -63,7 +67,7 @@ exports.queueData = function (queueData) {
         console.log("ERROR: Socket.io is not initialized yet");
         return;
     }
- 
+
     sio.emit("queueData", {
         ...queueData
     });

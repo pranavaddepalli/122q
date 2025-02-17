@@ -26,6 +26,7 @@
         "require-jsdoc": "off",
         "react/prop-types": "off",
         "linebreak-style": "off",
-        "camelcase": "off"
+        "camelcase": "off",
+        "object-curly-spacing": "off"
     }
 }

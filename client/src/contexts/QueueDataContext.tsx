@@ -1,7 +1,7 @@
-import {QueueData} from '../../../types/QueueData';
-import React, {createContext, useEffect, useState} from 'react';
+import { QueueData } from '../../../types/QueueData';
+import React, { createContext, useEffect, useState } from 'react';
 import HomeService from '../services/HomeService';
-import {socketSubscribeTo} from '../services/SocketsService';
+import { socketSubscribeTo } from '../services/SocketsService';
 
 /**
  * Context object for queue data
@@ -12,16 +12,23 @@ import {socketSubscribeTo} from '../services/SocketsService';
  */
 const QueueDataContext = createContext({
   queueData: {} as QueueData,
-  setQueueData: ((queueData: QueueData) => {}) as React.Dispatch<React.SetStateAction<QueueData>>,
+  setQueueData: ((queueData: QueueData) => {}) as React.Dispatch<
+    React.SetStateAction<QueueData>
+  >,
 });
 
 /**
  * Context provider for queue data
  * @return {React.Provider} Context provider for queue data
  */
-const QueueDataContextProvider = ({children}: {children: React.ReactNode}) => {
+const QueueDataContextProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const [queueData, setQueueData] = useState<QueueData>({
     title: 'Office Hours Queue',
+    ownerEmail: '',
     uninitializedSem: false,
     queueFrozen: true,
     allowCDOverride: true,
@@ -54,21 +61,21 @@ const QueueDataContextProvider = ({children}: {children: React.ReactNode}) => {
       setQueueData(data);
     });
 
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === 'visible') {
-        HomeService.getAll().then((res) => {
-          setQueueData(res.data);
-        });
-      }
-    };
-    document.addEventListener('visibilitychange', handleVisibilityChange);
+    // const handleVisibilityChange = () => {
+    //   if (document.visibilityState === 'visible') {
+    //     HomeService.getAll().then((res) => {
+    //       setQueueData(res.data);
+    //     });
+    //   }
+    // };
+    // document.addEventListener('visibilitychange', handleVisibilityChange);
   }, []);
 
   return (
-    <QueueDataContext.Provider value={{queueData, setQueueData}}>
+    <QueueDataContext.Provider value={{ queueData, setQueueData }}>
       {children}
     </QueueDataContext.Provider>
   );
 };
 
-export {QueueDataContext, QueueDataContextProvider};
+export { QueueDataContext, QueueDataContextProvider };
