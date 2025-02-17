@@ -9,6 +9,7 @@ const sockets = require('./sockets');
 const waittime = require('./waittimes');
 const settings = require('./settings');
 const notify = require('./notify');
+const config = require('../config/config.js');
 
 const StudentStatus = queue.StudentStatus;
 
@@ -78,6 +79,7 @@ function buildQueueData() {
     uninitializedSem: adminSettings.currSem == null,
     queueFrozen: queueFrozen,
     allowCDOverride: adminSettings.allowCDOverride,
+    ownerEmail: config.OWNER_EMAIL,
 
     // global stats
     numStudents: ohq.size(),

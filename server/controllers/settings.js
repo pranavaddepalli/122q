@@ -20,7 +20,7 @@ const defaultAdminSettings = {
   questionsURL: '',
   rejoinTime: 15,
   enforceCMUEmail: true,
-  allowCDOverride: true,
+  allowCDOverride: false,
   dayDictionary: {},
 };
 
@@ -301,13 +301,8 @@ exports.post_update_course_name = function (req, res) {
 };
 
 exports.post_update_semester = function (req, res) {
-  if (!req.user || !req.user.isAdmin) {
-    respond_error(
-      req,
-      res,
-      "You don't have permissions to perform this operation",
-      403
-    );
+  if (!req.user || !req.user.isOwner) {
+    respond_error(req, res, 'Only the course owner can change semesters', 403);
     return;
   }
 
