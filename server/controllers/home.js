@@ -1014,7 +1014,6 @@ exports.post_dismiss_message = function (req, res) {
 
   ohq.dismissMessage(id);
 
-  sockets.dismiss_message(id);
   emitNewStudentData(id);
   emitNewAllStudents();
 

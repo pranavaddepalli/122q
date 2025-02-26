@@ -16,6 +16,7 @@ import HomeService from '../../services/HomeService';
 import {UserDataContext} from '../../contexts/UserDataContext';
 import {QueueDataContext} from '../../contexts/QueueDataContext';
 import {StudentDataContext} from '../../contexts/StudentDataContext';
+import { NotificationsActive } from '@mui/icons-material';
 
 function createPage(page, link) {
   return {page, link};
@@ -100,6 +101,8 @@ export default function Navbar(props) {
     HomeService.unfreezeQueue();
   };
 
+  const [notificationPermission, setNotificationPermission] = useState(Notification.permission);
+
   const unfreezeButton = <Button color="secondary" variant="contained" sx={{mx: 2}} onClick={unfreezeQueue}>Unfreeze</Button>;
   const freezeButton = <Button color="secondary" variant="contained" sx={{mx: 2}} onClick={freezeQueue}>Freeze</Button>;
 
@@ -143,6 +146,17 @@ export default function Navbar(props) {
                     <MenuItem onClick={freezeQueue}>
                       <Typography variant='subtitle2' sx={{mx: 2}}>
                         Freeze
+                      </Typography>
+                    </MenuItem>
+                  )
+                }
+                {
+                  notificationPermission !== 'granted' && (
+                    <MenuItem onClick={() => Notification.requestPermission((permission) => {
+                      setNotificationPermission(permission);
+                    })}>
+                      <Typography variant='subtitle2' sx={{mx: 2}}>
+                        Enable Notifications
                       </Typography>
                     </MenuItem>
                   )
@@ -193,6 +207,15 @@ export default function Navbar(props) {
           <OHQueueHeader/>
           {
             userData.isTA && isHome && (queueData.queueFrozen ? unfreezeButton : freezeButton)
+          }
+          {
+            notificationPermission !== 'granted' && (
+              <IconButton color="secondary" onClick={() => Notification.requestPermission((permission) => {
+                setNotificationPermission(permission);
+              })}>
+                <NotificationsActive />
+              </IconButton>
+            )
           }
         </Box>
         <Box sx={{flexGrow: 0, display: 'flex', color: '#FFFFFF'}}>
