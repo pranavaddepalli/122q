@@ -1,7 +1,7 @@
 import { QueueData } from '../../../types/QueueData';
 import React, { createContext, useEffect, useState } from 'react';
 import HomeService from '../services/HomeService';
-import { socketSubscribeTo } from '../services/SocketsService';
+import { ensureSocketConnected, socketSubscribeTo } from '../services/SocketsService';
 
 /**
  * Context object for queue data
@@ -61,14 +61,15 @@ const QueueDataContextProvider = ({
       setQueueData(data);
     });
 
-    // const handleVisibilityChange = () => {
-    //   if (document.visibilityState === 'visible') {
-    //     HomeService.getAll().then((res) => {
-    //       setQueueData(res.data);
-    //     });
-    //   }
-    // };
-    // document.addEventListener('visibilitychange', handleVisibilityChange);
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        HomeService.getAll().then((res) => {
+          setQueueData(res.data);
+        });
+        ensureSocketConnected();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
   }, []);
 
   return (

@@ -1,9 +1,9 @@
-import io from 'socket.io-client';
+import io, { Socket } from 'socket.io-client';
 import Cookies from 'universal-cookie';
 
 const cookies = new Cookies();
 
-let socket;
+let socket : Socket;
 const SOCKET_URL = process.env.REACT_APP_PROTOCOL + '://' + process.env.REACT_APP_DOMAIN;
 const SOCKET_PATH = process.env.REACT_APP_SOCKET_PATH;
 
@@ -18,6 +18,23 @@ export const initiateSocket = () => {
   if (userCookies != null) {
     socket.emit('authenticate', userCookies.access_token);
   }
+
+  socket.on('disconnect', (reason, details) => {
+    console.log('Client disconnected', reason, details);
+
+    if (!socket.active) {
+      console.log('Inactive socket connection');
+      socket.connect();
+    }
+  });
+
+  socket.on('connect_error', (error) => {
+    console.log('Connection error', error.message);
+    if (!socket.active) {
+      console.log('Inactive socket connection');
+      socket.connect();
+    }
+  });
 };
 
 export const socketSubscribeTo = (emission, callback) => {
@@ -36,4 +53,16 @@ export const socketUnsubscribeFrom = (emission) => {
   }
 
   socket.off(emission);
+};
+
+export const ensureSocketConnected = () => {
+  if (!socket) {
+    console.log('No existing socket, initiating');
+    initiateSocket();
+  }
+
+  if (!socket.connected || !socket.active) {
+    console.log('Existing socket not connected or inactive, reconnecting');
+    socket.connect();
+  }
 };

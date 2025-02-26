@@ -38,6 +38,10 @@ httpInstance.interceptors.response.use(
       return res;
     },
     (err) => {
+      if (!err.response) {
+        showErrorToast('Server error, no response');
+        return Promise.reject(err);
+      }
       if (err.response.status >= 500) {
         const message = 'Server Error: ' + err.response.data.message;
         showErrorToast(message);
