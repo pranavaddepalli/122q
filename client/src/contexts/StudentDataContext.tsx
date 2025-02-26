@@ -2,7 +2,7 @@ import React, {createContext, useEffect, useState, useContext} from 'react';
 import {StudentData} from '../../../types/StudentData';
 import {UserDataContext} from '../contexts/UserDataContext';
 import HomeService from '../services/HomeService';
-import {socketSubscribeTo} from '../services/SocketsService';
+import {ensureSocketConnected, socketSubscribeTo} from '../services/SocketsService';
 import {StudentStatusValues} from '../services/StudentStatus';
 
 /**
@@ -68,16 +68,17 @@ const StudentDataContextProvider = ({children}: {children: React.ReactNode}) => 
         }
       });
 
-      // const handleVisibilityChange = () => {
-      //   if (document.visibilityState === 'visible') {
-      //     HomeService.getStudentData().then((res) => {
-      //       if (res.status === 200 && res.data.andrewID === userData.andrewID) {
-      //         setStudentData(res.data);
-      //       }
-      //     });
-      //   }
-      // };
-      // document.addEventListener('visibilitychange', handleVisibilityChange);
+      const handleVisibilityChange = () => {
+        if (document.visibilityState === 'visible') {
+          HomeService.getStudentData().then((res) => {
+            if (res.status === 200 && res.data.andrewID === userData.andrewID) {
+              setStudentData(res.data);
+            }
+            ensureSocketConnected();
+          });
+        }
+      };
+      document.addEventListener('visibilitychange', handleVisibilityChange);
     }
   }, [userData.isAuthenticated]);
 

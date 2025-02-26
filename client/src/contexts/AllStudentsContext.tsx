@@ -2,7 +2,7 @@ import React, {createContext, useEffect, useState, useContext} from 'react';
 import {StudentData} from '../../../types/StudentData';
 import {UserDataContext} from '../contexts/UserDataContext';
 import HomeService from '../services/HomeService';
-import {socketSubscribeTo} from '../services/SocketsService';
+import {ensureSocketConnected, socketSubscribeTo} from '../services/SocketsService';
 
 /**
  * Context object for all students on the queue
@@ -35,14 +35,15 @@ const AllStudentsContextProvider = ({children}: {children: React.ReactNode}) => 
         setAllStudents(data.allStudents);
       });
 
-      // const handleVisibilityChange = () => {
-      //   if (document.visibilityState === 'visible') {
-      //     HomeService.getAllStudents().then((res) => {
-      //       setAllStudents(res.data.allStudents);
-      //     });
-      //   }
-      // };
-      // document.addEventListener('visibilitychange', handleVisibilityChange);
+      const handleVisibilityChange = () => {
+        if (document.visibilityState === 'visible') {
+          HomeService.getAllStudents().then((res) => {
+            setAllStudents(res.data.allStudents);
+          });
+          ensureSocketConnected();
+        }
+      };
+      document.addEventListener('visibilitychange', handleVisibilityChange);
     }
   }, [userData.isTA]);
 

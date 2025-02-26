@@ -18,8 +18,9 @@ exports.init = function (server) {
             origin: config.PROTOCOL + "://" + config.DOMAIN + ":" + config.CLIENT_PORT,
             methods: ["GET", "POST"]
         },
+        // buffer last minute of messages
         connectionStateRecovery: {
-            maxDisconnectionDuration: 2 * 60 * 1000,
+            maxDisconnectionDuration: 1 * 60 * 1000,
             skipMiddlewares: true
         }
     });
@@ -53,8 +54,8 @@ exports.init = function (server) {
 
         socket.on("disconnect", () => {
             console.log(`Client disconnected (${socket.session?.name})`);
-            socket.leave(student_room);
-            socket.leave(ta_room);
+            // socket.leave(student_room);
+            // socket.leave(ta_room);
         });
     });
 };
