@@ -65,6 +65,8 @@ const StudentDataContextProvider = ({children}: {children: React.ReactNode}) => 
       socketSubscribeTo('studentData', (data: StudentData) => {
         if (data.andrewID === userData.andrewID) {
           setStudentData(data);
+        } else {
+          console.log('Student data id doesn\'t match andrewID');
         }
       });
 
@@ -73,6 +75,8 @@ const StudentDataContextProvider = ({children}: {children: React.ReactNode}) => 
           HomeService.getStudentData().then((res) => {
             if (res.status === 200 && res.data.andrewID === userData.andrewID) {
               setStudentData(res.data);
+            } else if (res.data.andrewID === userData.andrewID) {
+              console.log('Student data id doesn\'t match andrewID');
             }
             ensureSocketConnected();
           });

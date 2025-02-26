@@ -29,6 +29,8 @@ function StudentMain() {
           'body': `${res.data.taData.taName} is ready to help you.`,
           'requireInteraction': true,
         });
+      } else {
+        console.log('Received help for other student');
       }
     });
 
@@ -37,6 +39,8 @@ function StudentMain() {
         new Notification('Please update your question', {
           'requireInteraction': true,
         });
+      } else {
+        console.log('Received updateQRequest for other student');
       }
     });
 
@@ -47,6 +51,8 @@ function StudentMain() {
         new Notification('You\'ve been messaged by a TA', {
           'requireInteraction': true,
         });
+      } else {
+        console.log('Received message for other student');
       }
     });
 
@@ -55,6 +61,8 @@ function StudentMain() {
         new Notification('You\'ve been removed from the queue', {
           'requireInteraction': true,
         });
+      } else {
+        console.log('Received remove for other student');
       }
     });
 
@@ -63,6 +71,8 @@ function StudentMain() {
         new Notification('Your entry been approved by a TA', {
           'requireInteraction': true,
         });
+      } else {
+        console.log('Received approveCooldown for other student');
       }
     });
   }, [userData.andrewID]);

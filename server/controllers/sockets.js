@@ -48,14 +48,16 @@ exports.init = function (server) {
                 if (result.semester_users[0].is_ta) {
                     socket.leave(student_room);
                     socket.join(ta_room);
+                } else {
+                    // get andrew id and join room
+                    let andrewID = result.email.split("@")[0];
+                    socket.join(andrewID);
                 }
             });
         });
 
         socket.on("disconnect", () => {
             console.log(`Client disconnected (${socket.session?.name})`);
-            // socket.leave(student_room);
-            // socket.leave(ta_room);
         });
     });
 };
@@ -83,7 +85,7 @@ exports.studentData = function (studentData) {
         return;
     }
 
-    sio.emit("studentData", {
+    sio.to(studentData.andrewID).emit("studentData", {
         ...studentData
     });
 }
@@ -97,7 +99,7 @@ exports.allStudents = function (allStudents) {
         return;
     }
 
-    sio.emit("allStudents", {
+    sio.to(ta_room).emit("allStudents", {
         allStudents: allStudents
     });
 }
@@ -111,7 +113,7 @@ exports.help = function (studentAndrewID, name) {
         return;
     }
 
-    sio.emit("help", {
+    sio.to(studentAndrewID).emit("help", {
         andrewID: studentAndrewID,
         data: {
             taData: {
@@ -130,7 +132,7 @@ exports.unhelp = function (studentAndrewID, taAndrewID) {
         return;
     }
 
-    sio.emit("unhelp", {
+    sio.to(studentAndrewID).emit("unhelp", {
         andrewID: studentAndrewID,
         data: {
             taData: {
@@ -144,7 +146,7 @@ exports.unhelp = function (studentAndrewID, taAndrewID) {
  * Socket that emits when a new student joins the queue
  */
 exports.add = function (studentData) {
-    sio.emit("add", {
+    sio.to(ta_room).emit("add", {
         studentData: studentData
     });
 }
@@ -158,7 +160,7 @@ exports.remove = function (studentAndrewID) {
         return;
     }
 
-    sio.emit("remove", {
+    sio.to(studentAndrewID).emit("remove", {
         andrewID: studentAndrewID,
     });
 }
@@ -172,7 +174,7 @@ exports.updateQRequest = function (studentAndrewID) {
         return;
     }
 
-    sio.emit("updateQRequest", {
+    sio.to(studentAndrewID).emit("updateQRequest", {
         andrewID: studentAndrewID,
     });
 }
@@ -186,25 +188,11 @@ exports.message = function (studentAndrewID, name) {
         return;
     }
 
-    sio.emit("message", {
+    sio.to(studentAndrewID).emit("message", {
         andrewID: studentAndrewID,
         data: {
             taName: name,
         }
-    });
-}
-
-/**
- * Socket that emits when a student dismisses a message
- */
-exports.dismiss_message = function (studentAndrewID) {
-    if (!sio) {
-        console.log("ERROR: Socket.io is not initialized yet");
-        return;
-    }
-
-    sio.to(ta_room).emit("dismissMessage", {
-        andrewID: studentAndrewID,
     });
 }
 
@@ -217,7 +205,7 @@ exports.approveCooldown = function (studentAndrewID) {
         return;
     }
 
-    sio.emit("approveCooldown", {
+    sio.to(studentAndrewID).emit("approveCooldown", {
         andrewID: studentAndrewID,
     });
 }
