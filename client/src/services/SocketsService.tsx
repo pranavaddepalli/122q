@@ -20,21 +20,24 @@ export const initiateSocket = () => {
   }
 
   socket.on('disconnect', (reason, details) => {
-    console.log('Client disconnected', reason, details);
+    console.log('Client disconnected, reconnecting', reason, details);
 
-    if (!socket.active) {
-      console.log('Inactive socket connection');
+    setTimeout(() => {
       socket.connect();
-    }
+    }, 1000);
   });
 
   socket.on('connect_error', (error) => {
-    console.log('Connection error', error.message);
-    if (!socket.active) {
-      console.log('Inactive socket connection');
+    console.log('Connection error, reconnecting', error.message);
+    setTimeout(() => {
       socket.connect();
-    }
+    }, 1000);
   });
+
+  // dumbass brute force so nginx doesn't kill us
+  setInterval(() => {
+    socket.emit('ping');
+  }, 5000);
 };
 
 export const socketSubscribeTo = (emission, callback) => {

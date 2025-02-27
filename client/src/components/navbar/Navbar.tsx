@@ -101,7 +101,8 @@ export default function Navbar(props) {
     HomeService.unfreezeQueue();
   };
 
-  const [notificationPermission, setNotificationPermission] = useState(Notification.permission);
+  const defaultNotificationPermission = ('Notification' in window) ? Notification.permission : 'denied';
+  const [notificationPermission, setNotificationPermission] = useState(defaultNotificationPermission);
 
   const unfreezeButton = <Button color="secondary" variant="contained" sx={{mx: 2}} onClick={unfreezeQueue}>Unfreeze</Button>;
   const freezeButton = <Button color="secondary" variant="contained" sx={{mx: 2}} onClick={freezeQueue}>Freeze</Button>;
@@ -152,9 +153,13 @@ export default function Navbar(props) {
                 }
                 {
                   notificationPermission !== 'granted' && (
-                    <MenuItem onClick={() => Notification.requestPermission((permission) => {
-                      setNotificationPermission(permission);
-                    })}>
+                    <MenuItem onClick={() => {
+                      if ('Notification' in window) {
+                        Notification.requestPermission((permission) => {
+                          setNotificationPermission(permission);
+                        });
+                      }
+                    }}>
                       <Typography variant='subtitle2' sx={{mx: 2}}>
                         Enable Notifications
                       </Typography>
@@ -210,9 +215,13 @@ export default function Navbar(props) {
           }
           {
             notificationPermission !== 'granted' && (
-              <IconButton color="secondary" onClick={() => Notification.requestPermission((permission) => {
-                setNotificationPermission(permission);
-              })}>
+              <IconButton color="secondary" onClick={() => {
+                if ('Notification' in window) {
+                  Notification.requestPermission((permission) => {
+                    setNotificationPermission(permission);
+                  });
+                }
+              }}>
                 <NotificationsActive />
               </IconButton>
             )
