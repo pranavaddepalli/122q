@@ -14,6 +14,9 @@ let student_room = crypto.randomBytes(72).toString('base64');
  */
 exports.init = function (server) {
     sio = require("socket.io")(server, {
+        pingTimeout: 45000,
+        pingInterval: 2000,
+        maxHttpBufferSize: 1e7,
         cors: {
             origin: config.PROTOCOL + "://" + config.DOMAIN + ":" + config.CLIENT_PORT,
             methods: ["GET", "POST"]
