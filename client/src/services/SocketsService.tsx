@@ -34,7 +34,7 @@ export const initiateSocket = () => {
     }, 1000);
   });
 
-  // dumbass brute force
+  // dumbass brute force so nginx doesn't kill us
   setInterval(() => {
     socket.emit('ping');
   }, 5000);
